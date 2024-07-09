@@ -9,7 +9,8 @@
     "serve": "cross-env NODE_ENV=production node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma": "npx prisma",
-    "migrate:dev": "dotenv -e .env.development prisma migrate dev"
+    "migrate:dev": "dotenv -e .env.development -- npx prisma migrate dev",
+    "migrate:dev-create-only": "dotenv -e .env.development -- npx prisma migrate dev --create-only"
   },
   "author": "",
   "license": "ISC",

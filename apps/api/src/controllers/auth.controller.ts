@@ -69,6 +69,7 @@ export async function register(req: Request, res: Response) {
           data: {
             userId: referredBy.id,
             points: 10000,
+            expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
           },
         });
       }
