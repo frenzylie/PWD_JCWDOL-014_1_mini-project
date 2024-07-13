@@ -7,7 +7,6 @@ import { config } from 'dotenv';
 const prisma = new PrismaClient();
 config({ path: './.env.development' });
 
-
 export async function register(req: Request, res: Response) {
   try {
     const { name, email, password, role, referredByNum } = req.body;
@@ -69,7 +68,18 @@ export async function register(req: Request, res: Response) {
           data: {
             userId: referredBy.id,
             points: 10000,
-            expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
+            expiryDate: new Date(
+              new Date().setMonth(new Date().getMonth() + 3),
+            ),
+          },
+        });
+
+        await prisma.coupon.create({
+          data: {
+            userId: newUser.id,
+            expiryDate: new Date(
+              new Date().setMonth(new Date().getMonth() + 3),
+            ),
           },
         });
       }
@@ -122,21 +132,32 @@ export async function login(req: Request, res: Response) {
       console.error('JWT_SECRET is not defined. Please check your .env file.');
       return res.status(500).json({ message: 'Internal server error' });
     }
-    
+
     const token = await sign(jwtPayload, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
-    
+
     return res.status(200).json({
       message: 'User logged in',
       data: user,
       token: token,
     });
-    
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       message: 'Internal server error',
     });
   }
+}
+
+export async function me(req: Request, res: Response) {
+  const user = {
+    name: req.user?.name,
+    email: req.user?.email,
+  };
+
+  return res.status(200).json({
+    message: 'User found',
+    data: user,
+  });
 }
