@@ -26,6 +26,10 @@ yarn-error.log*
 .env
 .env.local
 .env.development.local
+<<<<<<< HEAD
+.env.development
+=======
+>>>>>>> origin/main
 .env.test.local
 .env.production.local
 
