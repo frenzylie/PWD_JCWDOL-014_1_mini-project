@@ -63,16 +63,38 @@ export async function register(req: Request, res: Response) {
           ownReferralNum: referredByNum,
         },
       });
+        
       if (referredBy) {
-        await prisma.pointTransaction.create({
-          data: {
+        const pointsToAdd = 10000;
+        const expiryDate = new Date(new Date().setMonth(new Date().getMonth() + 3));
+      
+        const existingUser = await prisma.pointTransaction.findFirst({
+          where: {
             userId: referredBy.id,
-            points: 10000,
-            expiryDate: new Date(
-              new Date().setMonth(new Date().getMonth() + 3),
-            ),
           },
         });
+      
+        if (existingUser) {
+          await prisma.pointTransaction.update({
+            where: {
+              id: existingUser.id,
+            },
+            data: {
+              points: {
+                increment: pointsToAdd,
+              },
+              expiryDate: expiryDate,
+            },
+          });
+        } else {
+          await prisma.pointTransaction.create({
+            data: {
+              userId: referredBy.id,
+              points: pointsToAdd,
+              expiryDate: expiryDate,
+            },
+          });
+        }
 
         await prisma.coupon.create({
           data: {

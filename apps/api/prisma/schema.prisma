@@ -87,7 +87,8 @@ model Coupon {
   user User @relation(fields: [userId], references: [id])
   userId Int
   expiryDate DateTime
-  transaction Transaction?
+  transactionId Int?
+  transaction Transaction? @relation(fields: [transactionId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -102,8 +103,6 @@ model PointTransaction {
   expiryDate DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  transactionId Int?
-  transaction Transaction? @relation(fields: [transactionId], references: [id])
 
   @@map("point_transactions")
 
@@ -114,13 +113,11 @@ model Transaction {
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
   subtotal  Float
-  couponId  Int @unique
-  coupon    Coupon  @relation(fields: [couponId], references: [id])
-  pointsUsed Int   @default(0)
+  couponId  Int? 
+  coupon    Coupon[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   tickets   Ticket[]
-  pointTransaction PointTransaction[]
   
   @@map("transactions")
 }

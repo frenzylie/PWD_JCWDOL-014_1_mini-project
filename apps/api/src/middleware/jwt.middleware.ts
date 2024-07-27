@@ -5,6 +5,7 @@ import { config } from 'dotenv';
 config({ path: './.env.development' });
 
 type User = {
+  id: number;
   email: string;
   name: string;
   role: string;
