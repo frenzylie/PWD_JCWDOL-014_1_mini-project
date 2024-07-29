@@ -1,95 +1,46 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import React from 'react';
+import Image from 'next/image';
+import EventSearchPage from '@/components/EventSearchPage'; 
+import CreateEventSection from '@/components/CreateEventSection';
+import SponsorSection from '@/components/SposhorSection';
 
-export default function Home() {
+const Home: React.FC = () => {
+  const heroImage = '/images/hero1.jpeg'; // Path to your hero image
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <section className="hero-section relative h-screen">
+        <div className="absolute inset-0">
+          <Image
+            src={heroImage}
+            alt="Hero Image"
+            layout="fill"
+            objectFit="cover"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black opacity-50"></div> {/* Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-white text-center">
+              <h1 className="text-4xl md:text-6xl font-bold">Welcome to Event Kita</h1>
+              <p className="mt-4 text-lg md:text-2xl">
+                Find and create events with ease
+              </p>
+              <div className="mt-8 space-x-4">
+                <button className="px-6 py-3 bg-pink-500 text-white rounded-md text-lg">Get Ticket</button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+      <section id="events">
+        <EventSearchPage />
+      </section>
+      <section id="eventss">
+      <CreateEventSection />
+      </section>
+      <SponsorSection/>
+    </>
+  );
+};
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default Home;
