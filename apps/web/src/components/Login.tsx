@@ -22,9 +22,11 @@ export default function Login() {
         localStorage.setItem('token', response.data.token);
         axios.defaults.headers.common['Authorization'] =
           `Bearer ${response.data.token}`;
+          console.log('Authorization Header:', axios.defaults.headers.common['Authorization']);
         router.push('/');
       }
     } catch (error) {
+      console.error('Login failed', error);
       setErrorMessage('Login failed. Please try again later.');
     }
   }
@@ -32,8 +34,9 @@ export default function Login() {
   return (
     <>
       {errorMessage && <div>{errorMessage}</div>}
-      <div>
-        <form onSubmit={handleLogin}>
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center">Log In</h2>
           <div>
             <label htmlFor="email">Email:</label>
             <input
@@ -41,6 +44,9 @@ export default function Login() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              className="w-full p-2 mb-4 border border-gray-300 rounded"
             />
           </div>
           <div>
@@ -50,9 +56,12 @@ export default function Login() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              className="w-full p-2 mb-4 border border-gray-300 rounded"
             />
           </div>
-          <button type="submit">Login</button>
+          <button type="submit" className="w-full p-2 bg-orange-600 text-white rounded hover:bg-orange-500">Login</button>
         </form>
       </div>
     </>

@@ -173,13 +173,66 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function me(req: Request, res: Response) {
-  const user = {
-    name: req.user?.name,
-    email: req.user?.email,
-  };
+  try {
+    const userId = req.user?.id;
 
-  return res.status(200).json({
-    message: 'User found',
-    data: user,
-  });
+    if (!userId) {
+      return res.status(401).json({
+        message: 'Unauthorized',
+      });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        name: true,
+        email: true,
+        pointTransactions: {
+          where: {
+            expiryDate: {
+              gte: new Date(),
+            },
+          },
+          select: {
+            points: true,
+          },
+        },
+        coupons: {
+          where: {
+            expiryDate: {
+              gte: new Date(),
+            },
+            transactionId: null,
+          },
+          select: {
+            id: true,
+            expiryDate: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found',
+      });
+    }
+
+    const validPoints = user.pointTransactions.reduce((acc, pt) => acc + pt.points, 0);
+    const validCouponsCount = user.coupons.length;
+
+    return res.status(200).json({
+      message: 'User found',
+      data: {
+        name: user.name,
+        email: user.email,
+        validPoints,
+        validCoupons: validCouponsCount,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Internal server error',
+    });
+  }
 }

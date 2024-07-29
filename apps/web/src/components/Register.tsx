@@ -52,13 +52,16 @@ export default function Register() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
       <input
         name="name"
         value={formData.name}
         onChange={handleChange}
         placeholder="Name"
         required
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
       />
       <input
         name="email"
@@ -67,6 +70,7 @@ export default function Register() {
         onChange={handleChange}
         placeholder="Email"
         required
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
       />
       <input
         name="password"
@@ -75,6 +79,7 @@ export default function Register() {
         onChange={handleChange}
         placeholder="Password"
         required
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
       />
       <input
         name="confirmPassword"
@@ -83,12 +88,14 @@ export default function Register() {
         onChange={handleChange}
         placeholder="Confirm Password"
         required
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
       />
       <select
         name="role"
         value={formData.role}
         onChange={handleChange}
         required
+        className="w-full p-2 mb-4 border border-gray-300 rounded bg-white"
       >
         <option value="">Select Role</option>
         <option value="Customer">Customer</option>
@@ -99,9 +106,13 @@ export default function Register() {
         value={formData.referredByNum}
         onChange={handleChange}
         placeholder="Referred By (Optional)"
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
       />
       {error && <p>{error}</p>}
-      <button type="submit">Register</button>
+      <button type="submit"
+      className="w-full p-2 bg-orange-600 text-white rounded hover:bg-orange-500">
+      Register</button>
     </form>
+    </div>
   );
 }
